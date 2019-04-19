@@ -23,7 +23,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Stopping ....'
-                docker stop demo
+                sh 'docker stop demo'
                 echo 'Deploying....'
                 sh 'docker run --rm -d -p8081:8080  --name demo demo:master '
             }
