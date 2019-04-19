@@ -15,7 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build..'
-                sh 'mv -u target/demo-0.0.1-SNAPSHOT.jar  docker/demo.jar'
+                sh 'mv  target/demo-0.0.1-SNAPSHOT.jar  docker/demo.jar'
                 sh "docker build -t demo:${GIT_BRANCH} docker/"
             }
         }
