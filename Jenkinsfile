@@ -14,6 +14,7 @@ pipeline {
             }
         }
         stage('Build') {
+            agent any
             steps {
                 echo 'Build..'
                 sh 'mv  target/demo-0.0.1-SNAPSHOT.jar  docker/demo.jar'
@@ -21,6 +22,7 @@ pipeline {
             }
         }
         stage('Deploy') {
+            agent any
             steps {
                 echo 'Stopping ....'
                 sh 'docker stop demo'
