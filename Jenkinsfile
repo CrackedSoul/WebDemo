@@ -6,20 +6,23 @@ pipeline {
             }
     }
     stages {
-        stage('Build') {
+        stage('Package') {
             steps {
-                echo 'Building..'
+                echo 'Package..'
                 sh 'mvn clean package'
             }
         }
-        stage('Test') {
+        stage('Build') {
             steps {
-                echo 'Testing..'
+                echo 'Build..'
+                sh 'mv -u target/demo-0.0.1-SNAPSHOT.jar  docker/demo.jar'
+                sh "docker build -t demo:${GIT_BRANCH} docker/"
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                sh 'docker run -d -p8081:8080  --name demo demo:master '
             }
         }
     }
