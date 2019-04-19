@@ -1,12 +1,13 @@
 pipeline {
-    agent {
-            docker {
-                image 'maven:3-alpine'
-                args '-v /root/.m2:/root/.m2  -v /var/run/docker.sock:/var/run/docker.sock'
-            }
-    }
+    agent none
     stages {
         stage('Package') {
+            agent {
+                    docker {
+                        image 'maven:3-alpine'
+                        args '-v /root/.m2:/root/.m2 '
+                    }
+            }
             steps {
                 echo 'Package..'
                 sh 'mvn clean package'
@@ -21,8 +22,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
+                echo 'Stopping ....'
+                docker stop demo
                 echo 'Deploying....'
-                sh 'docker run -d -p8081:8080  --name demo demo:master '
+                sh 'docker run --rm -d -p8081:8080  --name demo demo:master '
             }
         }
     }
